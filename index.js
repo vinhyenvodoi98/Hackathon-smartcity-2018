@@ -1,7 +1,7 @@
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
-
+var http = require('http');
 var app = express();
 var mongoose = require ('mongoose');
 
@@ -18,7 +18,7 @@ app.use('/api',local);
 app.get('/',(req,res)=>{
     res.json({title: "Hello"});
 });
-
-app.listen(process.env.PORT || 3000,(err)=>{
-    console.log('server is running');
-})
+http.createServer(app).listen(3000, '0.0.0.0',
+  function(){
+    console.log("Express server listening on port " + app.get('port'));
+});
