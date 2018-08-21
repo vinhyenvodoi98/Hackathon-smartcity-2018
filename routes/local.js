@@ -7,7 +7,7 @@ router.get('/local',(req,res,next)=>{
 });
 
 router.post('/local', async (req,res,next)=>{
-    console.log(req.body.Local.start_location);
+    console.log(req.body);
     // await new Coordinates({
     //     start_lat : req.body.Local.start_location.lat,
     //     start_lng : req.body.Local.start_location.lng,
