@@ -18,8 +18,7 @@ app.use('/api',local);
 app.get('/',(req,res)=>{
     res.json({title: "Hello"});
 });
-
 http.createServer(app).listen(3000, '0.0.0.0',
   function(){
-    console.log("server is running " + app.get('port'));
+    console.log("Express server listening on port " + app.get('port'));
 });
