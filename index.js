@@ -15,6 +15,9 @@ app.use(bodyParser.urlencoded({extended :false}));
 app.use(morgan('dev'));
 
 app.use('/api',local);
+app.get('/',(req,res)=>{
+    res.json({title: "Hello"});
+});
 
 app.listen(3000,(err)=>{
     console.log('server is running');
