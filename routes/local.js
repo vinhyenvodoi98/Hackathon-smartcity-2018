@@ -8,12 +8,12 @@ router.get('/local',(req,res,next)=>{
 
 router.post('/local', async (req,res)=>{
     console.log(req.body);
-    await new Coordinates({
-        start_lat : req.body.Local.start_location[0].lat,
-        start_lng : req.body.Local.start_location[0].lng,
-        end_lat : req.body.Local.end_location[0].lat,
-        end_lng : req.body.Local.end_location[0].lng,
-    }).save();
+    // await new Coordinates({
+    //     start_lat : req.body.Local.start_location[0].lat,
+    //     start_lng : req.body.Local.start_location[0].lng,
+    //     end_lat : req.body.Local.end_location[0].lat,
+    //     end_lng : req.body.Local.end_location[0].lng,
+    // }).save();
         res.json(req.body);
 });
 
