@@ -18,6 +18,10 @@ router.post('/local', async (req,res)=>{
         res.json(req.body);
 });
 
+router.getet('/maytram',(req,res)=>{
+    res.json({title : 'tim cach ket noi nhe'});
+})
+
 router.post('/maytram',async (req,res)=>{
     console.log(req.body);
     ///
