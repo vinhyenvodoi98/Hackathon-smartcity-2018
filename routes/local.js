@@ -1,5 +1,5 @@
 var express = require('express');
-var Coordinates = require ('../models/Coordinates');
+var Coordinates1 = require ('../models/Coordinates');
 var router = express.Router();
 
 router.get('/local',(req,res,next)=>{
@@ -103,7 +103,7 @@ router.get('/local',(req,res,next)=>{
 
 router.post('/local', async (req,res)=>{
     console.log(req.body);
-    await new Coordinates({
+    await new Coordinates1({
         start_lat : req.body.Local.start_location[0].lat,
         start_lng : req.body.Local.start_location[0].lng,
         end_lat : req.body.Local.end_location[0].lat,
