@@ -78,7 +78,7 @@ router.get('/local',(req,res,next)=>{
                 },
                 {
                     start_location: {
-                        lat: 21.023189,
+                        lat: 21.0231891,
                         lng: 105.7901765
                     },
                     end_location: {
