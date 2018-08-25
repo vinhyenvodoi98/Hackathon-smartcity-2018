@@ -39,7 +39,7 @@ router.get('/maytram',(req,res)=>{
     res.json({title : 'tim cach ket noi nhe'});
 })
 
-router.post('/maytram', (req,res)=>{
+router.post('/maytram', async (req,res)=>{
     console.log(req.body);
     /// TODO
 
@@ -73,22 +73,69 @@ router.post('/maytram', (req,res)=>{
             time: Number(time),
         })
 
-        // mlway.findOneAndUpdate({"_id":Number(id)}, 
-        //                         {"startWaypointID": Number(startWaypointID),
-        //                         "endWaypointID": Number(endWaypointI),
-        //                         "distant": Number(distant),
-        //                         "time": Number(time),}, 
-        //                         (err,doc,res) => {
+        await mlways.update({"_id": Number(id)},
+                            {
+                                startWaypointID: Number(startWaypointID),
+                                endWaypointID: Number(endWaypointI),
+                                distant: Number(distant),
+                                time: Number(time),
+                            }, 
+                            function(err) {
+                                if (err) {
+                                    mlway.save()
+                                }
+                            })
+
+        // await mlways.findByIdAndUpdate(Number(id), 
+        //                         {
+        //                             startWaypointID: Number(startWaypointID),
+        //                             endWaypointID: Number(endWaypointI),
+        //                             distant: Number(distant),
+        //                             time: Number(time),
+        //                         },
+        //                         {new: true},
+        //                         (err, res) => {
         //                             if (err) {
         //                                 mlway.save()
-        //                                 throw err
         //                             }
         //                         })
-        
     }
 
-
     res.json(req.body)
+})
+
+router.post('/nearby', async (req,res) => {
+    var startLat = Number(req.body.start_lat)
+    var startLng = Number(req.body.start_lng)
+
+    var point = await nearestPoint(startLat,startLng)
+
+    console.log(point)
+
+    res.json(point)
+    // await Waypoints.find({}, function(err, points) {
+    //     var map = []
+
+    //     points.forEach((point) => {
+    //         var newpoint = {}
+    //         newpoint.key = point
+    //         let lat = Number(point.lat)
+    //         let lng = Number(point.lng)
+    //         newpoint.value = (startLat-lat)*(startLat-lat) + (startLng-lng)*(startLng-lng)
+    //         map.push(newpoint)
+    //         console.log(point)
+    //     })
+
+    //     var max = map[0]
+
+    //     map.forEach((object) => {
+    //         max = (max.value > object.value) ? object : max
+    //     })
+
+    //     //point.json
+    //     res.json(max)
+    // })
+
 })
 
 router.post('/datawaypoint', async (req,res) => {
@@ -109,13 +156,43 @@ router.post('/datawaypoint', async (req,res) => {
                 place: String(place),
                 lat: Number(lat),
                 lng: Number(lng)
-            }).save() 
+            }).save()
     }
     
     console.log(line)
 
     res.json(req.body)
 })
+
+async function nearestPoint(Lat, Lng) {
+    var near = {}
+
+    await Waypoints.find({}, function(err, points) {
+        var map = []
+
+        points.forEach((point) => {
+            var newpoint = {}
+            newpoint.key = point
+            let lat = Number(point.lat)
+            let lng = Number(point.lng)
+            newpoint.value = (Lat-lat)*(Lat-lat) + (Lng-lng)*(Lng-lng)
+            map.push(newpoint)
+            //console.log(point)
+        })
+
+        var min = map[0]
+
+        map.forEach((object) => {
+            min = (min.value > object.value) ? object : min
+        })
+
+        near = min
+        console.log(min)
+
+    })
+    
+    return near.key
+}
 
 module.exports= router;
 

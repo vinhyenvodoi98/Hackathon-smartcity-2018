@@ -9,6 +9,7 @@ var mongoose = require ('mongoose');
 var local = require("./routes/local");
 
 //connect data
+mongoose.set('useFindAndModify', false)
 mongoose.connect('mongodb://vinhpro1998:1998vinhpro@ds125362.mlab.com:25362/vinhnodb',{ useNewUrlParser: true });
 
 app.use(bodyParser.json());
