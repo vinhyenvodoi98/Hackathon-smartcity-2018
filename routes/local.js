@@ -2,7 +2,6 @@ var express = require('express');
 var Coordinates = require ('../models/Coordinates');
 var mlways = require ('../models/mlways');
 var Waypoints = require ('../models/waypoints');
-var timduong = require('../timduong/timduong');
 
 var router = express.Router();
 
@@ -48,6 +47,14 @@ router.post('/maytram', (req,res)=>{
     let line = all.split('\n')
 
     for (var i = 0; i < line.length; i++) {
+        // 1	1	2	140	5
+        // 2	2	3	190	6
+        // 3	3	4	190	7
+        // 4	4	5	210	8
+        // 5	5	6	110	9
+        // 6	6	7	200	10
+        // 7	7	8	120	11
+        // 8	8	9	110	12
         let each = line[i].split('\t')
         let id = each[0]
         let startWaypointID = each[1]
@@ -57,6 +64,7 @@ router.post('/maytram', (req,res)=>{
 
         //console.log(time)
         
+
         var mlway = new mlways({
             _id: Number(id),
             startWaypointID: Number(startWaypointID),
@@ -64,6 +72,18 @@ router.post('/maytram', (req,res)=>{
             distant: Number(distant),
             time: Number(time),
         })
+
+        // mlway.findOneAndUpdate({"_id":Number(id)}, 
+        //                         {"startWaypointID": Number(startWaypointID),
+        //                         "endWaypointID": Number(endWaypointI),
+        //                         "distant": Number(distant),
+        //                         "time": Number(time),}, 
+        //                         (err,doc,res) => {
+        //                             if (err) {
+        //                                 mlway.save()
+        //                                 throw err
+        //                             }
+        //                         })
         
     }
 
