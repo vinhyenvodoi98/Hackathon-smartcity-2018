@@ -1,5 +1,6 @@
 var Graph = require('node-dijkstra');
 const mlways =require ('../models/mlways');
+var g = new Graph();
 
 async function createMap() {
     var map = {}
@@ -29,8 +30,12 @@ async function createMap() {
 
     })
     console.log(map)
-    var g = new Graph(map)
-    await console.log(g.path('2', '12', { cost: true }))
+    g = new Graph(map)
+    //await console.log(g.path('2', '12', { cost: true }))
+}
+
+async function findway() {
+    console.log(g.path('2', '12', { cost: true }))
 }
 
 async function nearestPoint(Lat, Lng) {

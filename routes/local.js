@@ -13,6 +13,9 @@ router.get('/local',(req,res,next)=>{
     let end_lat = Number(req.query.end_lat)
     let end_lng = Number(req.query.end_lng)
 
+    // tim diem lan can
+    var idstart = nearestPoint(start_lat,start_lng);
+    var idend = nearestPoint(end_lat,end_lng);
     console.log(start_lat,start_lng,end_lat,end_lng)
     
     res.json({})
@@ -43,43 +46,44 @@ router.post('/maytram', async (req,res)=>{
     console.log(req.body);
     /// TODO
 
-    // let all = String(req.body.all)
-    // let line = all.split('\n')
+    let all = String(req.body.all)
+    let line = all.split('\n')
 
-    // for (var i = 0; i < line.length; i++) {
-    //     let each = line[i].split('\t')
-    //     let id = each[0]
-    //     let startWaypointID = each[1]
-    //     let endWaypointI = each[2]
-    //     let distant = each[3]
-    //     let time = each[4]
+    for (var i = 0; i < line.length; i++) {
+        let each = line[i].split('\t')
+        let id = each[0]
+        let startWaypointID = each[1]
+        let endWaypointI = each[2]
+        let distant = each[3]
+        let time = each[4]
 
-    //     //console.log(time)
+        //console.log(time)
         
 
-    //     var mlway = new mlways({
-    //         _id: Number(id),
-    //         startWaypointID: Number(startWaypointID),
-    //         endWaypointID: Number(endWaypointI),
-    //         distant: Number(distant),
-    //         time: Number(time),
-    //     })
+        var mlway = new mlways({
+            _id: Number(id),
+            startWaypointID: Number(startWaypointID),
+            endWaypointID: Number(endWaypointI),
+            distant: Number(distant),
+            time: Number(time),
+        })
 
-    //     await mlways.update({"_id": Number(id)},
-    //                         {
-    //                             startWaypointID: Number(startWaypointID),
-    //                             endWaypointID: Number(endWaypointI),
-    //                             distant: Number(distant),
-    //                             time: Number(time),
-    //                         }, 
-    //                         function(err) {
-    //                             if (err) {
-    //                                 mlway.save()
-    //                             }
-    //                         })
-    // }
+        await mlways.update({"_id": Number(id)},
+                            {
+                                startWaypointID: Number(startWaypointID),
+                                endWaypointID: Number(endWaypointI),
+                                distant: Number(distant),
+                                time: Number(time),
+                            }, 
+                            function(err) {
+                                if (err) {
+                                    mlway.save()
+                                }
+                            })
+    }
 
-    // res.json(req.body)
+    createMap();
+    res.json(req.body)
 })
 
 router.post('/nearby', async (req,res) => {
