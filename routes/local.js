@@ -85,17 +85,29 @@ router.get('/local',(req,res,next)=>{
                         lat: 21.0272930,
                         lng: 105.7877501
                     }
+                },
+                {
+                    start_location: {
+                        lat: 21.0272930,
+                        lng: 105.7877501
+                    },
+                    end_location: {
+                        lat: 21.0265990,
+                        lng: 105.7866829
+                    }
                 }
-                // {
-                //     start_location: {
-                //         lat: "21.0272930",
-                //         lng: "105.7877501"
-                //     },
-                //     end_location: {
-                //         lat: "21.0265990",
-                //         lng: "105.7866829"
-                //     }
-                // }
+            ],
+            jams: [
+                {
+                    start_location: {
+                        lat: 21.0272930,
+                        lng: 105.7877501
+                    },
+                    end_location: {
+                        lat: 21.0265990,
+                        lng: 105.7866829
+                    }
+                }
             ]
         }
     })
