@@ -1,8 +1,8 @@
-var Graph = require('node-dijkstra');
-const mlways =require ('../models/mlways');
-var g = new Graph();
+const Graph = require('node-dijkstra');
+const mlways = require ('../models/mlways');
+//const graph = new Graph();
 
-async function createMap() {
+async function createMap(idstart,idend) {
     var map = {}
     await mlways.find({}, (err,points) => {
         points.forEach((point) => {
@@ -29,44 +29,19 @@ async function createMap() {
         })
 
     })
-    console.log(map)
-    g = new Graph(map)
-    //await console.log(g.path('2', '12', { cost: true }))
+    //console.log(map)
+    var graph = new Graph(map)
+    var kq= graph.path(String(idstart), String(idend), { cost: true })
+    //console.log(graph.path(String(idstart), String(idend), { cost: true }));
+    return kq;
+    // kq.path.forEach((id)=>{
+    //     console.log(id);
+    // })
 }
 
-async function findway() {
-    console.log(g.path('2', '12', { cost: true }))
-}
+// async function findway() {
+//     console.log(graph.path('2', '12', { cost: true }))
+// }
 
-async function nearestPoint(Lat, Lng) {
-    var near = {}
-
-    await Waypoints.find({}, function(err, points) {
-        var map = []
-
-        points.forEach((point) => {
-            var newpoint = {}
-            newpoint.key = point
-            let lat = Number(point.lat)
-            let lng = Number(point.lng)
-            newpoint.value = (Lat-lat)*(Lat-lat) + (Lng-lng)*(Lng-lng)
-            map.push(newpoint)
-            //console.log(point)
-        })
-
-        var min = map[0]
-
-        map.forEach((object) => {
-            min = (min.value > object.value) ? object : min
-        })
-
-        near = min
-        console.log(min)
-
-    })
-    
-    return near.key
-}
-
-module.exports = nearestPoint;
 module.exports = createMap;
+// module.exports = findway;

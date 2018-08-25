@@ -2,11 +2,13 @@ var express = require('express');
 var Coordinates = require ('../models/Coordinates');
 var mlways = require ('../models/mlways');
 var Waypoints = require ('../models/waypoints');
+var createMap = require ('../timduong/timduong');
+var nearestPoint = require ('../timduong/nearby');
 
 var router = express.Router();
 
 router.get('/local',(req,res,next)=>{
-    console.log(req)
+    //console.log(req)
     
     let start_lat = Number(req.query.start_lat)
     let start_lng = Number(req.query.start_lng)
@@ -14,28 +16,18 @@ router.get('/local',(req,res,next)=>{
     let end_lng = Number(req.query.end_lng)
 
     // tim diem lan can
-    var idstart = nearestPoint(start_lat,start_lng);
-    var idend = nearestPoint(end_lat,end_lng);
-    console.log(start_lat,start_lng,end_lat,end_lng)
+    nearestPoint(start_lat,start_lng).then((idstart)=>{
+        nearestPoint(end_lat,end_lng).then((idend)=>{
+            createMap(Number(idstart),Number(idend)).then((route)=>{
+                console.log(route);
+            })
+        })
+    });
     
-    res.json({})
+    res.json({
+        Title:'s'    
+    })
     
-});
-
-router.post('/local', async (req,res)=>{
-    console.log(req.body);
-    var abc = Array(req.body.Local.start_location);
-    abc.length
-    console.log(req.body.Local.start_location.length);
-    await new Coordinates({
-
-        start_lat : req.body.Local.start_location[0].lat,
-        start_lng : req.body.Local.start_location[0].lng,
-        end_lat : req.body.Local.end_location[0].lat,
-        end_lng : req.body.Local.end_location[0].lng,
-    }).save();
-        if(error) throw error;
-        res.json(req.body);
 });
 
 router.get('/maytram',(req,res)=>{
@@ -49,52 +41,53 @@ router.post('/maytram', async (req,res)=>{
     let all = String(req.body.all)
     let line = all.split('\n')
 
-    for (var i = 0; i < line.length; i++) {
-        let each = line[i].split('\t')
-        let id = each[0]
-        let startWaypointID = each[1]
-        let endWaypointI = each[2]
-        let distant = each[3]
-        let time = each[4]
+    // for (var i = 0; i < line.length; i++) {
+    //     let each = line[i].split('\t')
+    //     let id = each[0]
+    //     let startWaypointID = each[1]
+    //     let endWaypointID = each[2]
+    //     let distant = each[3]
+    //     let time = each[4]
 
-        //console.log(time)
+    //     console.log(time)
         
 
-        var mlway = new mlways({
-            _id: Number(id),
-            startWaypointID: Number(startWaypointID),
-            endWaypointID: Number(endWaypointI),
-            distant: Number(distant),
-            time: Number(time),
-        })
+    //     var mlway = new mlways({
+    //         _id: Number(id),
+    //         startWaypointID: Number(startWaypointID),
+    //         endWaypointID: Number(endWaypointID),
+    //         distant: Number(distant),
+    //         time: Number(time),
+    //     })
 
-        await mlways.update({"_id": Number(id)},
-                            {
-                                startWaypointID: Number(startWaypointID),
-                                endWaypointID: Number(endWaypointI),
-                                distant: Number(distant),
-                                time: Number(time),
-                            }, 
-                            function(err) {
-                                if (err) {
-                                    mlway.save()
-                                }
-                            })
-    }
+    //     await mlways.update({"_id": Number(id)},
+    //                         {
+    //                             startWaypointID: Number(startWaypointID),
+    //                             endWaypointID: Number(endWaypointID),
+    //                             distant: Number(distant),
+    //                             time: Number(time),
+    //                         }, 
+    //                         function(err) {
+    //                             if (err) {
+    //                                 mlway.save()
+    //                             }
+    //                         })
+    // }
 
-    createMap();
-    res.json(req.body)
+    //await createMap();
+    //res.json(req.body)
 })
 
 router.post('/nearby', async (req,res) => {
     var startLat = Number(req.body.start_lat)
     var startLng = Number(req.body.start_lng)
 
-    var point = await nearestPoint(startLat,startLng)
+    nearestPoint(startLat,startLng).then((newid)=>{
+        console.log(newid);
+    });
 
-    console.log(point)
-
-    res.json(point)
+    //console.log(point)
+    res.json({})
    
 })
 
