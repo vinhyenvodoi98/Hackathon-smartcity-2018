@@ -1,32 +1,35 @@
 var express = require('express');
-var Coordinates = require ('../models/Coordinates');
 var mlways = require ('../models/mlways');
 var Waypoints = require ('../models/waypoints');
 var createMap = require ('../timduong/timduong');
 var nearestPoint = require ('../timduong/nearby');
+var routeJson = require ('../timduong/step'); 
+var stepJson = require ('../timduong/aStep');
 
 var router = express.Router();
 
-router.get('/local',(req,res,next)=>{
+router.get('/local',(req,res)=>{
     //console.log(req)
-    
     let start_lat = Number(req.query.start_lat)
     let start_lng = Number(req.query.start_lng)
     let end_lat = Number(req.query.end_lat)
     let end_lng = Number(req.query.end_lng)
 
-    // tim diem lan can
     nearestPoint(start_lat,start_lng).then((idstart)=>{
         nearestPoint(end_lat,end_lng).then((idend)=>{
-            createMap(Number(idstart),Number(idend)).then((route)=>{
-                console.log(route);
+            createMap(Number(idstart),Number(idend)).then((route)=>{ 
+                //console.log(route);
+                routeJson(route).then((step)=>{
+                    console.log(step);
+                    stepJson(step,route).then((astep)=>{
+                        console.log(JSON.parse(astep));
+                        //res.json({step});
+                    })                    
+                }) 
             })
         })
-    });
-    
-    res.json({
-        Title:'s'    
-    })
+    });    
+
     
 });
 

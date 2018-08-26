@@ -21,7 +21,9 @@ app.get('/',(req,res)=>{
     res.json({title: "Hello"});
 });
 
-http.createServer(app).listen(4200, '0.0.0.0',
-  function(){
-    console.log("Express server listening on port " + app.get('port'));
-});
+app.listen(3300);
+console.log('server is running')
+// http.createServer(app).listen(4200, '0.0.0.0',
+//   function(){
+//     console.log("Express server listening on port " + app.get('port'));
+// });
