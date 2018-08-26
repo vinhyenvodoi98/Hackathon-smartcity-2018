@@ -26,7 +26,6 @@ async function routeJson(source) {
 
     return allPoint;
    //console.log(allPoint2);
-    
 }
 
 
