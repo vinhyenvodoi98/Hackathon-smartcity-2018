@@ -1,21 +1,32 @@
-function stepJson (allPoint,source){  
-    path=source.path;
+async function stepJson (allPoint,source){  
+    
+    var path=source.path;
+    var step=[];
+    //console.log(allPoint[6].lat)
+    for (var i = 1; i < path.length; i++) {
 
-    let step = []
-
-    for (var i = 1 ; i < path.length; i++) {
-        let aStep = {}
-        aStep.start_location.lat = allPoint[path[i-1]].lat
-        aStep.start_location.lng = allPoint[path[i-1]].lng
-        aStep.end_location.lat = allPoint[path[i]].lat
-        aStep.end_location.lng = allPoint[path[i]].lng
+        let aStep = 
+            {
+                start_location: {
+                    lat: await allPoint[path[i-1]].lat,
+                    lng: await allPoint[path[i-1]].lng
+                },
+                end_location: {
+                    lat: await allPoint[path[i]].lat,
+                    lng: await allPoint[path[i]].lng
+                }
+            }
         step.push(aStep)
+
     }
 
-    let responce = {}
-    responce.Instruct.step = step
+    let responce = {
+        Instruct: {
+            step: step
+        }
+    }
 
-    console.log(responce);
+    console.log(responce)
     return responce;
 }
 

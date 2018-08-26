@@ -18,12 +18,10 @@ router.get('/local',(req,res)=>{
     nearestPoint(start_lat,start_lng).then((idstart)=>{
         nearestPoint(end_lat,end_lng).then((idend)=>{
             createMap(Number(idstart),Number(idend)).then((route)=>{ 
-                //console.log(route);
                 routeJson(route).then((step)=>{
-                    console.log(step);
                     stepJson(step,route).then((astep)=>{
-                        console.log(JSON.parse(astep));
-                        //res.json({step});
+                        //console.log(astep);
+                        res.json({step});
                     })                    
                 }) 
             })
