@@ -21,7 +21,7 @@ router.get('/local',(req,res)=>{
                 routeJson(route).then((step)=>{
                     stepJson(step,route).then((astep)=>{
                         //console.log(astep);
-                        res.json({step});
+                        res.json({astep});
                     })                    
                 }) 
             })
