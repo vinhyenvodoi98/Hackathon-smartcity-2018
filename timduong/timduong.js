@@ -7,7 +7,7 @@ async function createMap(idstart,idend) {
 
     points.forEach((point) => {
         let node = {}
-        node[point.endWaypointID] = point.distant
+        node[point.endWaypointID] = point.time
         if (map[point.startWaypointID] != undefined) {
             let hih = Object.assign({}, map[point.startWaypointID], node)
             map[point.startWaypointID] = hih
@@ -19,7 +19,7 @@ async function createMap(idstart,idend) {
     
     points.forEach((point) => {
         let node = {}
-        node[point.startWaypointID] = point.distant
+        node[point.startWaypointID] = point.time
         if (map[point.endWaypointID] != undefined) {
             let hih = Object.assign({}, map[point.endWaypointID], node)
             map[point.endWaypointID] = hih
