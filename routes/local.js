@@ -5,8 +5,11 @@ var createMap = require ('../timduong/timduong');
 var nearestPoint = require ('../timduong/nearby');
 var routeJson = require ('../timduong/step'); 
 var stepJson = require ('../timduong/aStep');
+var jams = require ('../timduong/jams');
+
 
 var router = express.Router();
+
 
 router.get('/local',(req,res)=>{
     //console.log(req)
@@ -15,15 +18,18 @@ router.get('/local',(req,res)=>{
     let end_lat = Number(req.query.end_lat)
     let end_lng = Number(req.query.end_lng)
 
+
     nearestPoint(start_lat,start_lng).then((idstart)=>{
         nearestPoint(end_lat,end_lng).then((idend)=>{
             createMap(Number(idstart),Number(idend)).then((route)=>{ 
-                console.log(route);
+                //console.log(route);
                 routeJson(route).then((step)=>{
-                    stepJson(step,route).then((astep)=>{
-                        //console.log(astep);
-                        res.json(astep);
-                    })                    
+                    jams().then((jams)=>{
+                        stepJson(step,route,jams).then((astep)=>{
+                            //console.log(astep);
+                            res.json(astep);
+                        })  
+                    })                                     
                 }) 
             })
         })
@@ -33,31 +39,27 @@ router.get('/local',(req,res)=>{
 });
 
 router.post('/update', async (req, res) => {
+    res.json(req.body);
     console.log(req.body.val_left)
 
     await mlways.find({_id: Number(req.body._id)}, (err, all) => {
-        //console.log(all)
         all.map( async (point) => {
-            //console.log(point.distant)
             let time =  Number(point.distant)/Number(req.body.val_left)
             await mlways.findByIdAndUpdate(point._id, {
-                time: Number(time)
+                time: Number(time),
+                radio: Number(req.body.val_left)
             }, null)
         })
-        
     })
-
-    res.json(req.body);
 })
 
 router.post('/resetwaypoint', async (req, res) => {
     await mlways.find({}, (err, all) => {
-        //console.log(all)
         all.map( async (point) => {
-            //console.log(point.distant)
             let time = Number(point.distant)
             await mlways.findByIdAndUpdate(point._id, {
-                time: Number(time)
+                time: Number(time),
+                ratio: 1
             }, null)
         })
         
@@ -93,20 +95,21 @@ router.post('/maytram', async (req,res)=>{
             endWaypointID: Number(endWaypointID),
             distant: Number(distant),
             time: Number(time),
-        })
+            ratio: Number(1)
+        }).save()
 
-        await mlways.update({"_id": Number(id)},
-                            {
-                                startWaypointID: Number(startWaypointID),
-                                endWaypointID: Number(endWaypointID),
-                                distant: Number(distant),
-                                time: Number(time),
-                            }, 
-                            function(err) {
-                                if (err) {
-                                    mlway.save()
-                                }
-                            })
+        // await mlways.update({"_id": Number(id)},
+        //                     {
+        //                         startWaypointID: Number(startWaypointID),
+        //                         endWaypointID: Number(endWaypointID),
+        //                         distant: Number(distant),
+        //                         time: Number(time),
+        //                     }, 
+        //                     function(err) {
+        //                         if (err) {
+        //                             mlway.save()
+        //                         }
+        //                     })
     }
 
     //await createMap();

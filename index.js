@@ -2,17 +2,18 @@ var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var http = require('http');
+var Jams = require ('./timduong/jams');
 
 var app = express();
 var mongoose = require ('mongoose');
 
 var local = require("./routes/local");
 
-//connect data
+// //connect data
 mongoose.set('useFindAndModify', false)
 mongoose.connect('mongodb://vinhpro1998:1998vinhpro@ds125362.mlab.com:25362/vinhnodb',{ useNewUrlParser: true });
 // mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hackathon', {
-//   useNewUrlParser: true,  ss
+//   useNewUrlParser: true,
 // });
 
 app.use(bodyParser.json());

@@ -1,4 +1,4 @@
-async function stepJson (allPoint,source){  
+async function stepJson (allPoint,source,jam){  
     
     var path=source.path;
     var step=[];
@@ -22,7 +22,8 @@ async function stepJson (allPoint,source){
 
     let responce = {
         Instruct: {
-            step: step
+            step: step,
+            jams: jam
         }
     }
 

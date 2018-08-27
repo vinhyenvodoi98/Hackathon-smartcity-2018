@@ -7,6 +7,7 @@ const mlways = new mongoose.Schema({
     endWaypointID: Number,
     distant: Number,
     time: Number,
+    ratio : Number
 },{ timestamps: true});
 
 module.exports = mongoose.model('mlways',mlways);
