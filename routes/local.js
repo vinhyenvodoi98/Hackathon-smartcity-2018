@@ -32,6 +32,39 @@ router.get('/local',(req,res)=>{
     
 });
 
+router.post('/update', async (req, res) => {
+    console.log(req.body.val_left)
+
+    await mlways.find({_id: Number(req.body._id)}, (err, all) => {
+        //console.log(all)
+        all.map( async (point) => {
+            //console.log(point.distant)
+            let time =  Number(point.distant)/Number(req.body.val_left)
+            await mlways.findByIdAndUpdate(point._id, {
+                time: Number(time)
+            }, null)
+        })
+        
+    })
+
+    res.json(req.body);
+})
+
+router.post('/resetwaypoint', async (req, res) => {
+    await mlways.find({}, (err, all) => {
+        //console.log(all)
+        all.map( async (point) => {
+            //console.log(point.distant)
+            let time = Number(point.distant)
+            await mlways.findByIdAndUpdate(point._id, {
+                time: Number(time)
+            }, null)
+        })
+        
+    })
+    res.json({iSad: 'DONE'})
+})
+
 router.get('/maytram',(req,res)=>{
     res.json({title : 'tim cach ket noi nhe'});
 })
