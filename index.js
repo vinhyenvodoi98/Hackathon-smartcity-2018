@@ -12,7 +12,7 @@ var local = require("./routes/local");
 mongoose.set('useFindAndModify', false)
 mongoose.connect('mongodb://vinhpro1998:1998vinhpro@ds125362.mlab.com:25362/vinhnodb',{ useNewUrlParser: true });
 // mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/hackathon', {
-//   useNewUrlParser: true,
+//   useNewUrlParser: true,  ss
 // });
 
 app.use(bodyParser.json());
