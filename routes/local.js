@@ -47,7 +47,7 @@ router.post('/update', async (req, res) => {
             let time =  Number(point.distant)/Number(req.body.val_left)
             await mlways.findByIdAndUpdate(point._id, {
                 time: Number(time),
-                radio: Number(req.body.val_left)
+                ratio: Number(req.body.val_left)
             }, null)
         })
     })
