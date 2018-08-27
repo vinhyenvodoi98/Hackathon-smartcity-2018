@@ -6,21 +6,19 @@ async function routeJson(source) {
     let allPoint = {}
     let path = source.path
     
-    path.forEach(async (id) => {
+    await Promise.all(path.map(async (id) => {
         var res = await Waypoints.findById(Number(id));
         allPoint[id] = {
             lat : res.lat ,
             lng : res.lng
         }
-        console.log(allPoint);
-    })
-
-    //console.log(allPoint);
+    }));
+    console.log(allPoint);
     
-    allPoint= { '1': { lat: 21.027233, lng: 105.787644 },
-  '2': { lat: 21.026233, lng: 105.788228 },
-  '3': { lat: 21.02464, lng: 105.789153 },
-  '4': { lat: 21.023266, lng: 105.79001 } }
+//     allPoint= { '1': { lat: 21.027233, lng: 105.787644 },
+//   '2': { lat: 21.026233, lng: 105.788228 },
+//   '3': { lat: 21.02464, lng: 105.789153 },
+//   '4': { lat: 21.023266, lng: 105.79001 } }
 
 
     return allPoint;
